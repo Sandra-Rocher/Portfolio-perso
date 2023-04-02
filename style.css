@@ -687,7 +687,7 @@ footer img:hover{
 }
 /* end footer */
 
-/* petite souris, les anims sont gérées par intersectionObserver en js*/
+/* rat géré par intersectionObserver en js*/
 .special-container{
     width:100%;
     margin:auto;
