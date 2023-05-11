@@ -531,6 +531,10 @@ header{
     background-image:url(image-projet/api_meteo.png);
 }
 
+#Blog .image-site{
+    background-image:url(image-projet/site-blog.jpg);
+}
+
 
 .overlay{
     position:absolute;
