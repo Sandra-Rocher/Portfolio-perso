@@ -535,6 +535,10 @@ header{
     background-image:url(image-projet/site-blog.jpg);
 }
 
+#Velo-shop .image-site{
+    background-image:url(image-projet/velo-shop.jpg);
+}
+
 
 .overlay{
     position:absolute;
