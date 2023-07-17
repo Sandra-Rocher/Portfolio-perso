@@ -519,14 +519,6 @@ header{
     background-image:url(image-projet/site-sdb.jpg);
 }
 
-#site-divers .image-site{
-    background-image:url(image-projet/site-divers.jpg);
-}
-
-#site-velo .image-site{
-    background-image:url(image-projet/site-velo.jpg);
-}
-
 #API_meteo .image-site{
     background-image:url(image-projet/api_meteo.png);
 }
