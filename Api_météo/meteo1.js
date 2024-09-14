@@ -17,13 +17,39 @@ var callBackGetSuccess = function(data){
     element1.innerHTML = data.main.temp + " &degC";
     element2.innerHTML = "Ressentie : " + data.main.feels_like + " &degC";
     element8.innerHTML = "<img src='https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png'> ";
-    element4.innerHTML = "Conditions : " + data.weather[0].main;
+
+    
+// Traduction de CONDITION par défaut en EN vers FR avec API DeepL en free key:
+const apiKey = '1632191b-075c-4eac-b660-3d25141ff5b9:fx';
+
+let weatherCondition = data.weather[0].main;
+
+// Requête vers l'API DeepL, en FR
+fetch(`https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weatherCondition}&target_lang=FR`, {
+    method: 'POST'
+})
+.then(response => response.json())
+.then(result => {
+    // Stockage du texte traduit :
+    let translatedText = result.translations[0].text;
+
+    // Mise à jour de l'element4 ayant était traduit
+    element4.innerHTML = "Conditions : " + translatedText;
+})
+.catch(error => {
+    console.error('Erreur:', error);
+});
+
+
+    // version simple sans traduction ci dessous (obsolète du coup): 
+    // element4.innerHTML = "Conditions : " + data.weather[0].main;
     element6.innerHTML = "Temp min : " + data.main.temp_min + " &degC";
     element7.innerHTML = "Temp max : " + data.main.temp_max + " &degC";
     element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
     element3.innerHTML = "Humidité : " + data.main.humidity + " %";
 
-    // n'existe pas dans mon abonnement :
+
+    // Ajout possible mais n'existe pas dans mon abonnement de free key :
     // element9.innerHTML = "Mm de pluie par heure : " + data.rain;
     // element10.innerHTML = "Mn de neige par heure : " + data.snow;
 }
@@ -31,7 +57,7 @@ var callBackGetSuccess = function(data){
 
 function buttonClickGet(){
 
-     // la height de la div s'allonge au click pour que la météo rentre dedans
+     // la height de la div s'allonge au click pour que toutes les infos météo rentrent dans la zone
     document.getElementById("zone").style.height = "370px";
 
     var queryLoc = document.getElementById("queryLoc").value;
@@ -41,13 +67,18 @@ function buttonClickGet(){
     // ou https://api.openweathermap.org/data/2.5/weather?q=paris,fr&appid=44e9203541e336d7e477fe5fd8022a05&units=metric
     
     $.get(url, callBackGetSuccess).done(function() {
-    // alert("second success");
+    // alert("Success");
  })
     .fail(function(){
-    alert("error");
+    alert("Cette ville n'existe pas, veuillez vérifier l'ortographe.");
 })
     .always(function() {
 });
 
 }
+
+
+
+
+
 
