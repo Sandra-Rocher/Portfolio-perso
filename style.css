@@ -562,7 +562,7 @@ header{
 
 .projet ul.method{
     font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     color: white;
@@ -571,6 +571,7 @@ header{
     display: flex;
     justify-content:center;
     flex-wrap: wrap;
+    padding-inline-start: 0px;
 }
 
 .overlay .method li{
@@ -584,12 +585,19 @@ header{
 
 .overlay ul.but{
     display:inline-block;
-    margin: 15px 22px;
+    margin: 6px 20px;
     height: 170px;
     font-size: 13px;
     line-height: 23px;
     text-align: left;
     overflow: scroll;
+}
+
+@media (max-width: 767px) {
+    .overlay a{
+        position: relative;
+        bottom: 21px;
+    }
 }
 
 .git{

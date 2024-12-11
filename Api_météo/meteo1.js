@@ -20,7 +20,7 @@ var callBackGetSuccess = function(data){
 
     
 // Traduction de CONDITION par défaut en EN vers FR avec API DeepL en free key:
-const apiKey = 'xxx';
+// const apiKey = 'xxx';
 
 
 let weatherCondition = data.weather[0].main;
