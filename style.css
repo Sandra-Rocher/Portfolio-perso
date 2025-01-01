@@ -515,10 +515,6 @@ header{
     background-image:url(image-projet/Mond-evasion.jpg);
 }
 
-#site-sdb .image-site{
-    background-image:url(image-projet/site-sdb.jpg);
-}
-
 #API_meteo .image-site{
     background-image:url(image-projet/api_meteo.png);
 }
@@ -533,6 +529,10 @@ header{
 
 #My_Vlog .image-site{
     background-image:url(image-projet/my_vlog.jpg);
+}
+
+#loterie .image-site{
+    background-image:url(image-projet/loterie.jpg);
 }
 
 

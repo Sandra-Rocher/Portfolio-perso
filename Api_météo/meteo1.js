@@ -20,6 +20,7 @@ var callBackGetSuccess = function(data){
 
     
 // Traduction de CONDITION par défaut en EN vers FR avec API DeepL en free key:
+const apiKey = '1632191b-075c-4eac-b660-3d25141ff5b9:fx';
 // const apiKey = 'xxx';
 
 
