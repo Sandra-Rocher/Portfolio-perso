@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Tirage au Sort</title>
+    
+        <meta name="author" content="Rocher Sandra">
+        <meta name="keywords" content="Ma Petite Loterie, loterie en ligne, tirage au sort d'un ou plusieurs gagnant(s), participant(s), 
+        HTML, CSS, JavaScript, PHP, MySQL, webdesign, github">
+        <meta name="description" content="Une loterie en ligne qui permet le tirage au sort d'un ou de plusieurs gagnant(s)">
+
+        <!-- CSS stylesheet -->
+        <link href="style/style.css" rel="stylesheet">
+
+        <!-- CSS Leafletjs.com (website data, quick start page) -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+        <!-- Script JS Leaflet (website data, quick start page) -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+       
+        <!-- Script JS jsPDF (to generate PDF) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    </head>
+
+    <body>
+
+    <div class="header">
+        <nav class="nav">
+            <a href="index.html" class="no-underline"><h1 class="h1">Ma Petite Loterie</h1></a>
+        </nav>
+    </div>
+
+    <div class="conteneur2">
+        <div class="general">
+
+            <div class="center titre">À propos</div>
+
+                <p>Ma Petite Loterie est un site entièrement gratuit, sans aucune pub.</p>
+
+                <p>Les données du tirage au sort ne sont à aucun moment stockées sur le serveur.
+                Les données des tirages sont strictement confidentielles : ni les auteurs du site, ni les hébergeurs du site 
+                n'y ont accès.</p>
+
+                <p>Le seul moyen de garder la preuve du résultat d'un tirage au sort est de le télécharger sous forme de PDF 
+                    en cliquant sur le bouton prévu à cet effet. Le fichier s'enregistre alors dans le dossier "Téléchargements" 
+                    de votre ordinateur. Pour le retrouver, il aura pour nom : Resultat_Loterie_date_heure.pdf</p>
+
+                <p>Le site a entièrement été réalisé de manière bénévole.</p>
+                <p>Le code source du site est consultable à cette adresse : https://github.com/Sandra-Rocher/Ma_Petite_Loterie</p>
+
+            <div class="center titre">Comment ça marche ?</div>
+
+                Les tirages sont effectués en local, directement par le navigateur, à l'aide de la méthode Math.random().
+
+            <div class="center titre">Conditions Générales d'Utilisation</div>
+
+                <p>L'utilisation du site Ma petite Loterie implique l'acceptation des conditions générales d'utilisation (CGU) 
+                    suivantes (CGU et mentions légales susceptibles de modification à tout moment, les utilisateurs sont 
+                    invités à les consulter à chaque utilisation du site).</p>
+
+                <p>Le site est supposé accessible en tout instant, pour tous les utilisateurs connectés au 
+                    serveur, néanmoins des interruptions (volontaires : mise à jour, maintenance technique, etc.) ou involontaires 
+                (problèmes hébergeurs, bugs, etc.) peuvent néanmoins survenir.</p>
+
+                <p>Le site est composé d'un formulaire ayant pour but de générer un tirage au sort. 
+                Toutefois, les auteurs ne pourront être tenus responsables d'éventuelles omissions ou inexactitudes dans les 
+                résultats et informations fournis. Les données et informations qui peuvent être consultées sur le site
+                 évoluent régulièrement et ne peuvent être considérées comme fiables dans le temps.</p>
+
+                <p>Le site utilise des technologies web standard (HTML, CSS, JavaScript et Typescript) et ne 
+                pourra être tenu responsable de dommages directs ou indirects liés à l'usage du site. L'utilisateur s'engage à 
+                utiliser le site uniquement avec un matériel récent et des logiciels mis à jour et non modifiés 
+                (piratage, virus, etc.).</p>
+
+                <p>En utilisant le site Ma Petite Loterie l'hébergeur va proposer de recueillir certaines données comme la 
+                géolocalisation de l'utilisateur. Ces informations, si elles sont acceptées, seront écrites sur le PDF 
+                (s'il est généré) dans un encart en haut à droite de la page, couleur jaune fluo. Noter qu'aucune requête 
+                directe demandant nom, prénom, adresse, ou autres données personnelles identifiantes ne sera réalisée sur 
+                le site Ma Petite Loterie.</p>
+        </div>
+     </div>
+
+        <footer class="footer">
+            <nav class="footer-nav">
+                <a href="a-propos.html" class="footer-link">À propos</a>
+            </nav>
+        </footer>
+        
+            <!-- Script JS -->
+            <script type="text/javascript" src="./scripts/draw_lottery.js"></script>
+            <script type="text/javascript" src="./scripts/generate_pdf.js"></script>
+                
+    </body>
+</html>

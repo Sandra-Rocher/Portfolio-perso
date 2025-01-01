@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Tirage au Sort</title>
+    
+        <meta name="author" content="Rocher Sandra">
+        <meta name="keywords" content="Ma Petite Loterie, loterie en ligne, tirage au sort d'un ou plusieurs gagnant(s), participant(s), 
+        HTML, CSS, JavaScript, PHP, MySQL, webdesign, github">
+        <meta name="description" content="Une loterie en ligne qui permet le tirage au sort d'un ou de plusieurs gagnant(s)">
+
+        <!-- CSS -->
+        <link href="style/style.css" rel="stylesheet">
+
+        <!-- CSS Leafletjs.com (website data, quick start page) -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+        <!-- Script JS Leaflet (website data, quick start page) -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+       
+        <!-- Script JS jsPDF (to generate PDF) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    </head>
+
+    <body>
+
+    <div class="header">
+        <nav class="nav">
+            <a href="index.html" class="no-underline"><h1 class="h1">Ma Petite Loterie</h1></a>
+        </nav>
+    </div>
+
+    <div class="conteneur">
+        <div class="general">
+            
+            <div class="center">
+                <label for="maxParticipants">Nombre maximal de participants : </label>
+                <input type="number" id="maxParticipants" min="1" required>
+            </div>
+
+            <div class="center">
+                <label for="numWinners">Nombre de gagnants au total : </label>
+                <input type="number" id="numWinners" min="1" required>
+            </div>
+
+            <div class="center">
+                <button onclick="drawLots()">Tirer au sort</button>
+            </div>
+
+            <div class="center result">
+                <h2 id="win"></h2>
+                    <ul id="winnersList"></ul>
+                    <button id="downloadPDF" onclick="createPDF()" style="display: none;">Télécharger la preuve en PDF</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        <nav class="footer-nav">
+            <a href="a-propos.html" class="footer-link">À propos</a>
+        </nav>
+    </footer>
+
+        <!-- Script JS -->
+        <script type="text/javascript" src="./scripts/draw_lottery.js"></script>
+        <script type="text/javascript" src="./scripts/create_pdf.js"></script>
+        <script type="text/javascript" src="./scripts/monitoring.js"></script>
+        
+    </body>
+</html>
