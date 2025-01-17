@@ -27,43 +27,47 @@
 
     <body>
 
-    <div class="header">
-        <nav class="nav">
-            <a href="index.html" class="no-underline"><h1 class="h1">Ma Petite Loterie</h1></a>
-        </nav>
-    </div>
+        <div class="page-container">
 
-    <div class="conteneur">
-        <div class="general">
-            
-            <div class="center">
-                <label for="maxParticipants">Nombre maximal de participants : </label>
-                <input type="number" id="maxParticipants" min="1" required>
+            <div class="header">
+                <nav class="nav">
+                    <a href="index.html" class="no-underline"><h1 class="h1">Ma Petite Loterie</h1></a>
+                </nav>
             </div>
 
-            <div class="center">
-                <label for="numWinners">Nombre de gagnants au total : </label>
-                <input type="number" id="numWinners" min="1" required>
+            <div class="conteneur">
+                <div class="general">
+                    
+                    <div class="center">
+                        <label for="maxParticipants">Nombre maximal de participants : </label>
+                        <input type="number" id="maxParticipants" min="1" required>
+                    </div>
+
+                    <div class="center">
+                        <label for="numWinners">Nombre de gagnants au total : </label>
+                        <input type="number" id="numWinners" min="1" required>
+                    </div>
+
+                    <div class="center">
+                        <button onclick="drawLots()">Tirer au sort</button>
+                    </div>
+
+                    <div class="center result">
+                        <h2 id="win"></h2>
+                            <ul id="winnersList"></ul>
+                            <button id="downloadPDF" onclick="createPDF()" style="display: none;">Télécharger la preuve en PDF</button>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="center">
-                <button onclick="drawLots()">Tirer au sort</button>
-            </div>
-
-            <div class="center result">
-                <h2 id="win"></h2>
-                    <ul id="winnersList"></ul>
-                    <button id="downloadPDF" onclick="createPDF()" style="display: none;">Télécharger la preuve en PDF</button>
-            </div>
+            <footer class="footer">
+                <nav class="footer-nav">
+                    <a href="a-propos.html" class="footer-link">À propos</a>
+                </nav>
+            </footer>
 
         </div>
-    </div>
-
-    <footer class="footer">
-        <nav class="footer-nav">
-            <a href="a-propos.html" class="footer-link">À propos</a>
-        </nav>
-    </footer>
 
         <!-- Script JS -->
         <script type="text/javascript" src="./scripts/draw_lottery.js"></script>

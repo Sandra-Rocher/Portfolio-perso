@@ -54,7 +54,7 @@ function createPDF() {
                     h: 40,
                 },
                 contents: geolocationDetails,
-                open: false,
+                open: true,
             });
         }
 
