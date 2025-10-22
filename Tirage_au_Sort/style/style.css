@@ -57,7 +57,7 @@ html, body {
 .center button{
     margin: 5px;
     padding: 3px;
-    width: 35%;
+    width: auto;
     height: auto;
 }
 
