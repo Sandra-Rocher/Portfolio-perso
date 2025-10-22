@@ -4,10 +4,10 @@ function createPDF() {
     const { jsPDF } = window.jspdf;
 
     // By default : geolocation values
-    let road = "Unknow";
-    let city = "Unknow";
-    let country = "Unknow";
-    let postcode = "Unknow";
+    let road = "data blocked by the user";
+    let city = "data blocked by the user";
+    let country = "data blocked by the user";
+    let postcode = "data blocked by the user";
 
     // Get date and time
     const today = new Date();
@@ -15,10 +15,10 @@ function createPDF() {
     const time = today.toLocaleTimeString();
 
     // Get winners data
-    const maxParticipants = document.getElementById("maxParticipants").value || "Inconnu";
-    const numWinners = document.getElementById("numWinners").value || "Inconnu";
+    const maxParticipants = document.getElementById("maxParticipants")?.value || "data blocked by the user";
+    const numWinners = document.getElementById("numWinners")?.value || "data blocked by the user";
     const winnersList = document.getElementById("winnersList");
-    const winners = Array.from(winnersList.querySelectorAll("li")).map((li) => li.textContent);
+    const winners = Array.from(winnersList.querySelectorAll("li")).map((li) => li.textContent || "");
 
     // Detect if device is mobile or desktop :
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -34,9 +34,8 @@ function createPDF() {
         const margin = 10;
         let yPosition = 10;
 
-        // For Desktop : yellow annotation on the top right corner only if geolocation are available/accepted
-        if (!isMobile && (country !== "Non disponible" 
-                        || city !== "Non disponible")) {
+        // For Desktop : add a yellow annotation on the top right corner only if geolocation are available/accepted
+        if (!isMobile) {
             const geolocationDetails = `
                 Pays: ${country}
                 Ville: ${city}
@@ -116,11 +115,7 @@ function createPDF() {
             yPosition += 10;
         });
 
-        // New line and if there are too many => add a new page
-        if (yPosition > pageHeight - margin) {
-            pdf.addPage();
-            yPosition = margin;
-        }
+        // New line
         pdf.setLineWidth(1);
         pdf.line(10, yPosition, pageWidth - 10, yPosition);
         yPosition += 10;
@@ -134,11 +129,13 @@ function createPDF() {
         yPosition += 10;
 
 
-        // For Mobile : display yellow annotation geolocation directly 
-        if (isMobile && (road !== "Non disponible" 
-                        || city !== "Non disponible" 
-                        || country !== "Non disponible" 
-                        || postcode !== "Non disponible")) {
+        // For Mobile : display yellow annotation geolocation directly and write at the bottom of the page
+        if (isMobile) {
+            // Check if we need to add a new page if we are near the bottom
+            if (yPosition > pageHeight - 40) { 
+                pdf.addPage();
+                yPosition = margin;
+            }
 
             // New line
             pdf.setLineWidth(1);
@@ -157,7 +154,20 @@ function createPDF() {
             yPosition += 10;
         
             pdf.setFontSize(10);
-            const geolocationText = `${road} ${postcode} ${city}, ${country}`;
+            let geolocationText;
+                // If geolocation not accepted : "Data blocked by the user" only in one sentence.
+                if (
+                    road === "data blocked by the user" &&
+                    city === "data blocked by the user" &&
+                    country === "data blocked by the user" &&
+                    postcode === "data blocked by the user"
+                ) {
+                    geolocationText = "Data blocked by the user";
+                } else {
+                // If geolocation accepted : "Rue, Code postal, Ville, Pays"
+                    geolocationText = `${road} ${postcode} ${city}, ${country}`;
+                }
+
 
             // Split if the text is too long
             const wrappedText = pdf.splitTextToSize(geolocationText, pageWidth - 20);

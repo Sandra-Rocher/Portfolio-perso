@@ -58,5 +58,5 @@ function afficherGagnants(winners: number[]): void {
     }
 
     // Trigger the PDF creation function
-    generatePDF();
+    // generatePDF();
 }

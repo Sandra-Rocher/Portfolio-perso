@@ -4,10 +4,10 @@ import { jsPDF } from "jspdf";
 // Generate PDF with the draw results (and, if button clicked, geolocation results)
 function createPDF(): void {
     // Geolocation variables by default
-    let road: string = "Unknow";
-    let city: string = "Unknow";
-    let country: string = "Unknow";
-    let postcode: string = "Unknow";
+    let road: string = "data blocked by the user";
+    let city: string = "data blocked by the user";
+    let country: string = "data blocked by the user";
+    let postcode: string = "data blocked by the user";
 
     // Get date and time
     const today: Date = new Date();
@@ -15,10 +15,13 @@ function createPDF(): void {
     const time: string = today.toLocaleTimeString();
 
     // Get lottery data
-    const maxParticipants: string = (document.getElementById("maxParticipants") as HTMLInputElement)?.value || "Inconnu";
-    const numWinners: string = (document.getElementById("numWinners") as HTMLInputElement)?.value || "Inconnu";
+    const maxParticipants: string = (document.getElementById("maxParticipants") as HTMLInputElement)?.value || "data blocked by the user";
+    const numWinners: string = (document.getElementById("numWinners") as HTMLInputElement)?.value || "data blocked by the user";
     const winnersList: HTMLUListElement | null = document.getElementById("winnersList") as HTMLUListElement;
     const winners: string[] = winnersList ? Array.from(winnersList.querySelectorAll("li")).map((li) => li.textContent || "") : [];
+
+    // Detect if device is mobile or desktop
+    const isMobile: boolean = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
     const generatePDFContent = (): void => {
         const pdf = new jsPDF();
@@ -31,8 +34,8 @@ function createPDF(): void {
         const margin: number = 10;
         let yPosition: number = 10;
 
-        // Add geolocation annotation on the top right corner only if geolocation details are available/accepted
-        if (country !== "Non disponible" || city !== "Non disponible") {
+        // For desktop : Add a yellow annotation on the top right corner only if geolocation details are available/accepted
+        if (!isMobile) {
             const geolocationDetails: string = `
                 Pays: ${country}
                 Ville: ${city}
@@ -111,11 +114,7 @@ function createPDF(): void {
             yPosition += 10;
         });
 
-        // New line and if there are too many => add a new page
-        if (yPosition > pageHeight - margin) {
-            pdf.addPage();
-            yPosition = margin;
-        }
+        // New line
         pdf.setLineWidth(1);
         pdf.line(10, yPosition, pageWidth - 10, yPosition);
         yPosition += 10;
@@ -127,6 +126,53 @@ function createPDF(): void {
         const textWidth: number = pdf.getTextWidth(dateText);
         pdf.text(dateText, (pageWidth - textWidth) / 2, yPosition);
         yPosition += 10;
+
+        // For Mobile : display yellow annotation geolocation directly and write at the bottom of the page
+        if (isMobile) {
+             // Check if we need to add a new page if we are near the bottom
+            if (yPosition > pageHeight - 40) { 
+                pdf.addPage();
+                yPosition = margin;
+            }
+            
+            // New line
+            pdf.setLineWidth(1);
+            pdf.line(10, yPosition, pageWidth - 10, yPosition);
+            yPosition += 10;
+
+            // Line of geolocation
+            pdf.setFontSize(13);
+            pdf.setTextColor(0, 0, 0);
+            pdf.text("Informations de localisation :", 10, yPosition);
+
+            // Calculate the width of the text to draw the underline (bold size 0.3 only)
+            const underlineWidth3: number = pdf.getTextWidth("Informations de localisation :");
+            pdf.setLineWidth(0.3);
+            pdf.line(10, yPosition + 1, 10 + underlineWidth3, yPosition + 1);
+            yPosition += 10;
+
+            pdf.setFontSize(10);
+            let geolocationText: string ;
+                // If geolocation not accepted : "Data blocked by the user" only in one sentence.
+                if (
+                    road === "data blocked by the user" &&
+                    city === "data blocked by the user" &&
+                    country === "data blocked by the user" &&
+                    postcode === "data blocked by the user"
+                ) {
+                    geolocationText = "Data blocked by the user";
+                } else {
+                // If geolocation accepted : "Rue, Code postal, Ville, Pays"
+                    geolocationText = `${road} ${postcode} ${city}, ${country}`;
+                }
+
+            // Split if the text is too long
+            const wrappedText: string[] = pdf.splitTextToSize(geolocationText, pageWidth - 20);
+
+            pdf.text(wrappedText, 10, yPosition);
+            // Add 6px for each lines for the next text
+            yPosition += wrappedText.length * 6;
+        }
 
         // Download PDF
         // Format : DD_MM_YYYY_HH-MM-SS.pdf

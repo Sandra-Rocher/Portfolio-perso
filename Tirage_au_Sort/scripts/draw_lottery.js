@@ -55,5 +55,5 @@ function afficherGagnants(winners) {
     }
 
     // Activ geolocInformations function;
-    generatePDF();
+    // generatePDF();
 }
