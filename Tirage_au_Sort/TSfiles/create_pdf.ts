@@ -58,7 +58,7 @@ function createPDF(): void {
             });
         }
 
-        // Header and Title
+        // Header
         pdf.setFontSize(16);
         pdf.text("Preuve du tirage au sort - Ma Petite Loterie", 50, yPosition);
         yPosition += 10;
@@ -95,6 +95,7 @@ function createPDF(): void {
 
         // Calculate the width of the text to draw the underline (bold size 0.3 only)
         const underlineWidth2: number = pdf.getTextWidth("Résultat du tirage au sort de la loterie :");
+
         pdf.setLineWidth(0.3);
         pdf.line(10, yPosition + 1, 10 + underlineWidth2, yPosition + 1);
         yPosition += 10;
@@ -128,7 +129,12 @@ function createPDF(): void {
         yPosition += 10;
 
         // Download PDF
-        pdf.save(`Resultat_Loterie_${date}_${time}.pdf`);
+        // Format : DD_MM_YYYY_HH-MM-SS.pdf
+        // pdf.save(`Resultat_Loterie_${date}_${time}.pdf`);
+        // Format : DD_MM_YYYY _ HH H MM - SS s /pdf
+        const safeDate = date.replace(/\//g, "_"); // "22_10_2025"
+        const safeTime = time.replace(/^(\d{2}):(\d{2}):(\d{2})$/, "$1H$2-$3s");
+        pdf.save(`Resultat_Loterie_${safeDate}_${safeTime}.pdf`);
     };
 
     // Attempt to catch geolocation

@@ -3,22 +3,25 @@
 function createPDF() {
     const { jsPDF } = window.jspdf;
 
-    // By default : geolocation variable 
+    // By default : geolocation values
     let road = "Unknow";
     let city = "Unknow";
     let country = "Unknow";
     let postcode = "Unknow";
 
-    // Get date time
+    // Get date and time
     const today = new Date();
     const date = today.toLocaleDateString();
     const time = today.toLocaleTimeString();
 
-    // Get winners datas
+    // Get winners data
     const maxParticipants = document.getElementById("maxParticipants").value || "Inconnu";
     const numWinners = document.getElementById("numWinners").value || "Inconnu";
     const winnersList = document.getElementById("winnersList");
     const winners = Array.from(winnersList.querySelectorAll("li")).map((li) => li.textContent);
+
+    // Detect if device is mobile or desktop :
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
     const generatePDFContent = () => {
         const pdf = new jsPDF();
@@ -31,8 +34,9 @@ function createPDF() {
         const margin = 10;
         let yPosition = 10;
 
-        // Add geolocation annotation on the top right corner only if geolocation details are available/accepted
-        if (country !== "Non disponible" || city !== "Non disponible") {
+        // For Desktop : yellow annotation on the top right corner only if geolocation are available/accepted
+        if (!isMobile && (country !== "Non disponible" 
+                        || city !== "Non disponible")) {
             const geolocationDetails = `
                 Pays: ${country}
                 Ville: ${city}
@@ -58,12 +62,14 @@ function createPDF() {
             });
         }
 
-        // Header and Title
+        // Header
+        // pdf.setFont("helvetica", "normal");
+        // Bold Font Size rules : H1=16, H2=13, P=10
         pdf.setFontSize(16);
         pdf.text("Preuve du tirage au sort - Ma Petite Loterie", 50, yPosition);
         yPosition += 10;
 
-        // Line black + bold size 1
+        // Line black rules = (1)
         pdf.setLineWidth(1);
         pdf.line(10, yPosition, pageWidth - 10, yPosition);
         yPosition += 10;
@@ -89,7 +95,7 @@ function createPDF() {
         pdf.line(10, yPosition, pageWidth - 10, yPosition);
         yPosition += 10;
 
-        // Draw results
+        // Draw loterry results
         pdf.setFontSize(13);
         pdf.text("Résultat du tirage au sort de la loterie :", 10, yPosition);
 
@@ -127,11 +133,53 @@ function createPDF() {
         pdf.text(dateText, (pageWidth - textWidth) / 2, yPosition);
         yPosition += 10;
 
+
+        // For Mobile : display yellow annotation geolocation directly 
+        if (isMobile && (road !== "Non disponible" 
+                        || city !== "Non disponible" 
+                        || country !== "Non disponible" 
+                        || postcode !== "Non disponible")) {
+
+            // New line
+            pdf.setLineWidth(1);
+            pdf.line(10, yPosition, pageWidth - 10, yPosition);
+            yPosition += 10;
+
+            // Line of geolocation
+            pdf.setFontSize(13);
+            pdf.setTextColor(0, 0, 0);
+            pdf.text("Informations de localisation :", 10, yPosition);
+
+            // Calculate the width of the text to draw the underline (bold size 0.3 only)
+            const underlineWidth2 = pdf.getTextWidth("Informations de localisation :");
+            pdf.setLineWidth(0.3);
+            pdf.line(10, yPosition + 1, 10 + underlineWidth2, yPosition + 1);
+            yPosition += 10;
+        
+            pdf.setFontSize(10);
+            const geolocationText = `${road} ${postcode} ${city}, ${country}`;
+
+            // Split if the text is too long
+            const wrappedText = pdf.splitTextToSize(geolocationText, pageWidth - 20);
+
+            pdf.text(wrappedText, 10, yPosition);
+            // Add 6px for each lines for the next text
+            yPosition += wrappedText.length * 6; 
+        }
+
+
         // Download PDF
-        pdf.save(`Resultat_Loterie_${date}_${time}.pdf`);
+        // Format : DD_MM_YYYY_HH-MM-SS.pdf
+        // pdf.save(`Resultat_Loterie_${date}_${time}.pdf`);
+        // Format : DD_MM_YYYY _ HH H MM - SS s /pdf
+        const safeDate = date.replace(/\//g, "_"); // "22_10_2025"
+        const safeTime = time.replace(/^(\d{2}):(\d{2}):(\d{2})$/, "$1H$2-$3s");
+        pdf.save(`Resultat_Loterie_${safeDate}_${safeTime}.pdf`);
+        
     };
 
-    // Attempt, try to catch geolocation 
+
+    // Attempt/ try to catch geolocation 
     navigator.geolocation.getCurrentPosition(
         function (position) {
             const lat = position.coords.latitude;
