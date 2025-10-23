@@ -1,3 +1,7 @@
+// Valeur meteo.html valeur du queryLoc par défaut = new york, on peut changer par toulouse, london etc...
+// (qui traduira dans le link par toulouse,fr london,uk ou new+york,us) par exemple
+// NB : les villes seront espacées par des -, et les accents seront possible mais pas obligatoire
+
 var callBackGetSuccess = function(data){
     console.log("donnees api", data)
     // alert("Meteo temp :" data.main.temp);
@@ -12,6 +16,7 @@ var callBackGetSuccess = function(data){
     var element8 = document.getElementById("zone_meteo8");
     // var element9 = document.getElementById("zone_meteo9");
     // var element10 = document.getElementById("zone_meteo10");
+    var element11 = document.getElementById("zone_meteo11");
 
     element.innerHTML =  data.name;
     element1.innerHTML = data.main.temp + " &degC";
@@ -20,16 +25,28 @@ var callBackGetSuccess = function(data){
 
     
 // Traduction de CONDITION par défaut en EN vers FR avec API DeepL en free key:
-const apiKey = '1632191b-075c-4eac-b660-3d25141ff5b9:fx';
+
 // const apiKey = 'xxx';
 
 
 let weatherCondition = data.weather[0].main;
 
+// MAJ UP 23/10/25 1/2 : Ancienne version en //, ce site est hébergé par GitHub, et depuis 2024 les requêtes d'appels directes 
+// de github vers DeepL depuis le navigateur sont HS (à cause du CORS). Donc : Utilisation d’un proxy CORS (attention : il ne 
+// marchera qu'en local http://127.0.0.1:5500 pour la démo, sinon il faudrait faire un fichier PHP.
+// Schéma : Site localhost Météo -> requête appel API -> via Proxy -> vers DeepL = ok 
+//          Site github Météo -> requête appel API -> directement vers Deepl = Refusée
+// En bref il faut que ce soit le proxy qui face la requête vers deepl et pas github.
+// Problème : github n'hebergera pas du php, mais uniquement du html css js..) 
+const proxyUrl = "https://corsproxy.io/?";
+const deeplUrl = `https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weatherCondition}&target_lang=FR`;
+
+
 // Requête vers l'API DeepL, en FR
-fetch(`https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weatherCondition}&target_lang=FR`, {
-    method: 'POST'
-})
+// MAJ UP 23/10/25 2/2 :
+// fetch(`https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weatherCondition}&target_lang=FR`, {method: 'POST'
+// })
+fetch(proxyUrl + deeplUrl, { method: 'POST' })
 .then(response => response.json())
 .then(result => {
     // Stockage du texte traduit :
@@ -42,13 +59,42 @@ fetch(`https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weather
     console.error('Erreur:', error);
 });
 
-
     // version simple sans traduction ci dessous (obsolète du coup): 
     // element4.innerHTML = "Conditions : " + data.weather[0].main;
+
+
     element6.innerHTML = "Temp min : " + data.main.temp_min + " &degC";
     element7.innerHTML = "Temp max : " + data.main.temp_max + " &degC";
-    element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
     element3.innerHTML = "Humidité : " + data.main.humidity + " %";
+
+
+    // Mise à jour de l'element5 avec transformation des m/s en km/h 
+    let windSpeedMs = data.wind.speed;
+    let windSpeedKmh = (windSpeedMs * 3.6).toFixed(1);
+
+    element5.innerHTML = `Force du vent : ${windSpeedKmh} km/h`;
+
+    // version EN/US en m/s et pas FR en km/h ci dessous (obsolète du coup): 
+    // element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
+
+
+    // Fonction pour convertir les degrés (de 0 a 360 degres) en direction (nord, sud, est ou ouest)
+        function getWindDirection(deg) {
+            if (deg >= 338 || deg < 23) return "Nord";
+            if (deg >= 23 && deg < 68) return "Nord-Est";
+            if (deg >= 68 && deg < 113) return "Est";
+            if (deg >= 113 && deg < 158) return "Sud-Est";
+            if (deg >= 158 && deg < 203) return "Sud";
+            if (deg >= 203 && deg < 248) return "Sud-Ouest";
+            if (deg >= 248 && deg < 293) return "Ouest";
+            if (deg >= 293 && deg < 338) return "Nord-Ouest";
+        }
+
+        let windDirection = getWindDirection(data.wind.deg);
+
+        element11.innerHTML = `Direction du vent : ${windDirection}`;
+        // element11.innerHTML = "Direction du vent : " + data.wind.deg;
+
 
 
     // Ajout possible mais n'existe pas dans mon abonnement de free key :

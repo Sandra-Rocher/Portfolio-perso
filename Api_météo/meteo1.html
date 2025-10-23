@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href="meteo1.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="faviconmeteo.ico" />
     <title>Meteo</title>
 </head>
 <body>
@@ -15,9 +16,6 @@
             <div id="zone">
                 <h4> Saisissez la ville pour avoir sa météo</h4>
                 <input id="queryLoc" type="text" value="new york">
-                <!-- valeur par défaut = new york, on peut changer par toulouse, london etc...
-                    (qui traduira dans le link par toulouse,fr london,uk ou new+york,us) par exemple -->
-                    <!-- NB : les villes seront espacées par des -, et les accents seront possible mais pas obligatoire"  -->
             
                 <input type="button" value="Valider" onclick="buttonClickGet()">
             
@@ -42,6 +40,9 @@
                 <div class="disp3">
                     <div id="zone_meteo5"></div>
                     <div id="zone_meteo3"></div>
+                </div>
+                <div class="disp4">
+                    <div id="zone_meteo11"></div>
                 </div>
             </div>
         </div>
