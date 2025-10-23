@@ -25,7 +25,7 @@ var callBackGetSuccess = function(data){
 
     
 // Traduction de CONDITION par défaut en EN vers FR avec API DeepL en free key:
-
+const apiKey = '1632191b-075c-4eac-b660-3d25141ff5b9:fx';
 // const apiKey = 'xxx';
 
 
@@ -67,6 +67,16 @@ fetch(proxyUrl + deeplUrl, { method: 'POST' })
     element7.innerHTML = "Temp max : " + data.main.temp_max + " &degC";
     element3.innerHTML = "Humidité : " + data.main.humidity + " %";
 
+
+    // Mise à jour de l'element5 avec transformation des m/s en km/h 
+    let windSpeedMs = data.wind.speed;
+    let windSpeedKmh = (windSpeedMs * 3.6).toFixed(1);
+
+    element5.innerHTML = `Force du vent : ${windSpeedKmh} km/h`;
+
+    // version EN/US en m/s et pas FR en km/h ci dessous (obsolète du coup): 
+    // element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
+
     // Fonction pour convertir les degrés (de 0 a 360 degres) en direction (nord, sud, est ou ouest)
         function getWindDirection(deg) {
             if (deg >= 338 || deg < 23) return "Nord";
@@ -83,16 +93,6 @@ fetch(proxyUrl + deeplUrl, { method: 'POST' })
 
         element11.innerHTML = `Direction du vent : ${windDirection}`;
         // element11.innerHTML = "Direction du vent : " + data.wind.deg;
-
-
-    // Mise à jour de l'element5 avec transformation des m/s en km/h 
-    let windSpeedMs = data.wind.speed;
-    let windSpeedKmh = (windSpeedMs * 3.6).toFixed(1);
-
-    element5.innerHTML = `Force du vent : ${windSpeedKmh} km/h`;
-
-    // version EN/US en m/s et pas FR en km/h ci dessous (obsolète du coup): 
-    // element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
 
 
     // Ajout possible mais n'existe pas dans mon abonnement de free key :
