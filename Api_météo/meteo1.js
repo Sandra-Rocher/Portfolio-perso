@@ -38,15 +38,15 @@ let weatherCondition = data.weather[0].main;
 //          Site github Météo -> requête appel API -> directement vers Deepl = Refusée
 // En bref il faut que ce soit le proxy qui face la requête vers deepl et pas github.
 // Problème : github n'hebergera pas du php, mais uniquement du html css js..) 
-const proxyUrl = "https://corsproxy.io/?";
-const deeplUrl = `https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weatherCondition}&target_lang=FR`;
+// const proxyUrl = "https://corsproxy.io/?";
+// const deeplUrl = `https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weatherCondition}&target_lang=FR`;
 
 
 // Requête vers l'API DeepL, en FR
 // MAJ UP 23/10/25 2/2 : CORS = Cross-Origin Resource Sharing
-// fetch(`https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weatherCondition}&target_lang=FR`, {method: 'POST'
-// })
-fetch(proxyUrl + deeplUrl, { method: 'POST' })
+fetch(`https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weatherCondition}&target_lang=FR`, {method: 'POST'
+})
+// fetch(proxyUrl + deeplUrl, { method: 'POST' })
 .then(response => response.json())
 .then(result => {
     // Stockage du texte traduit :
@@ -69,29 +69,29 @@ fetch(proxyUrl + deeplUrl, { method: 'POST' })
 
 
     // Mise à jour de l'element5 avec transformation des m/s en km/h 
-    let windSpeedMs = data.wind.speed;
-    let windSpeedKmh = (windSpeedMs * 3.6).toFixed(1);
+    // let windSpeedMs = data.wind.speed;
+    // let windSpeedKmh = (windSpeedMs * 3.6).toFixed(1);
 
-    element5.innerHTML = `Force du vent : ${windSpeedKmh} km/h`;
+    // element5.innerHTML = `Force du vent : ${windSpeedKmh} km/h`;
 
     // version EN/US en m/s et pas FR en km/h ci dessous (obsolète du coup): 
-    // element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
+    element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
 
     // Fonction pour convertir les degrés (de 0 a 360 degres) en direction (nord, sud, est ou ouest)
-        function getWindDirection(deg) {
-            if (deg >= 338 || deg < 23) return "Nord";
-            if (deg >= 23 && deg < 68) return "Nord-Est";
-            if (deg >= 68 && deg < 113) return "Est";
-            if (deg >= 113 && deg < 158) return "Sud-Est";
-            if (deg >= 158 && deg < 203) return "Sud";
-            if (deg >= 203 && deg < 248) return "Sud-Ouest";
-            if (deg >= 248 && deg < 293) return "Ouest";
-            if (deg >= 293 && deg < 338) return "Nord-Ouest";
-        }
+        // function getWindDirection(deg) {
+        //     if (deg >= 338 || deg < 23) return "Nord";
+        //     if (deg >= 23 && deg < 68) return "Nord-Est";
+        //     if (deg >= 68 && deg < 113) return "Est";
+        //     if (deg >= 113 && deg < 158) return "Sud-Est";
+        //     if (deg >= 158 && deg < 203) return "Sud";
+        //     if (deg >= 203 && deg < 248) return "Sud-Ouest";
+        //     if (deg >= 248 && deg < 293) return "Ouest";
+        //     if (deg >= 293 && deg < 338) return "Nord-Ouest";
+        // }
 
-        let windDirection = getWindDirection(data.wind.deg);
+        // let windDirection = getWindDirection(data.wind.deg);
 
-        element11.innerHTML = `Direction du vent : ${windDirection}`;
+        // element11.innerHTML = `Direction du vent : ${windDirection}`;
         // element11.innerHTML = "Direction du vent : " + data.wind.deg;
 
 
