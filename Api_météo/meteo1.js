@@ -21,6 +21,16 @@
         }
 
 
+        // 🌅 Fonction pour formater l'heure en hh:mm pour le lever et le coucher du soleil
+        function formatTime(date) {
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            if (hours < 10) hours = "0" + hours;
+            if (minutes < 10) minutes = "0" + minutes;
+            return hours + "H" + minutes;
+        }
+
+
 var callBackGetSuccess = function(data){
     console.log("donnees api", data)
     // alert("Meteo temp :" data.main.temp);
@@ -34,6 +44,8 @@ var callBackGetSuccess = function(data){
     var element7 = document.getElementById("zone_meteo7");
     var element8 = document.getElementById("zone_meteo8");
     var element11 = document.getElementById("zone_meteo11");
+    var element12 = document.getElementById("zone_meteo12");
+    var element13 = document.getElementById("zone_meteo13");
     // Ajout possible mais n'existe pas dans mon abonnement de free key :
     // var element9 = document.getElementById("zone_meteo9");
     // var element10 = document.getElementById("zone_meteo10");
@@ -46,6 +58,7 @@ var callBackGetSuccess = function(data){
     element6.innerHTML = "Temp min : " + data.main.temp_min + " &degC";
     element7.innerHTML = "Temp max : " + data.main.temp_max + " &degC";
     element3.innerHTML = "Humidité : " + data.main.humidity + " %";
+    element12.innerHTML = "Code Pays : " + data.sys.country;
     // Ajout possible mais n'existe pas dans mon abonnement de free key :
     // element9.innerHTML = "Mm de pluie par heure : " + data.rain;
     // element10.innerHTML = "Mn de neige par heure : " + data.snow;
@@ -96,8 +109,15 @@ var callBackGetSuccess = function(data){
     // element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
 
 
+    // Direction du vent grace a la fonction getWindDirection :
     let windDirection = getWindDirection(data.wind.deg);
     element11.innerHTML = `Direction du vent : ${windDirection}`;
+
+
+    // Heure du lever et du coucher du soleil grace a la fonction formatTime :
+    let sunriseDate = new Date(data.sys.sunrise * 1000);
+    let sunsetDate = new Date(data.sys.sunset * 1000);
+    element13.innerHTML = "Lever et coucher du soleil : " + formatTime(sunriseDate) + " - " + formatTime(sunsetDate);
 
 }
 
@@ -105,7 +125,7 @@ var callBackGetSuccess = function(data){
     function buttonClickGet(){
 
         // la height de la div s'allonge au click pour que toutes les infos météo rentrent dans la zone
-        document.getElementById("zone").style.height = "370px";
+        document.getElementById("zone").style.height = "390px";
 
         var queryLoc = document.getElementById("queryLoc").value;
         var url="https://api.openweathermap.org/data/2.5/weather?q="+queryLoc+"&appid=44e9203541e336d7e477fe5fd8022a05&units=metric"

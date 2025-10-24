@@ -96,14 +96,9 @@ body{
     font-weight:600;
 }
 
-.disp3{
-    display:flex;
-    justify-content: space-around;
-    margin-top:20px;
-    font-weight:600;
-}
-
-.disp4{
+.disp3,
+.disp4,
+.disp5 {
     display:flex;
     justify-content: space-around;
     margin-top:20px;
