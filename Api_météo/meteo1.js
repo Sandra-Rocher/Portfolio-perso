@@ -4,7 +4,11 @@
 
 
 
-    // Fonction pour convertir les degrés (de 0 a 360 degres) en direction (nord, sud, est ou ouest)
+    // Fonction pour convertir les degrés d'une boussole (de 0 a 360 degres) en direction (nord, sud, est ou ouest).
+    // Cette fonction est en dehors du callBackGetSuccess car firefox (tolère l’appel à une fonction interne immédiatement)
+    // mais pas chrome (c'est lié à la portée de la fonction getWindDirection() et au moment où elle est exécutée).
+    // Firefox va donc répondre correctement ce que la fonction GetWindDirection demande, mais chrome lui restera sur le
+    // chiffre donné par data.wind.deg sans le transformer.
         function getWindDirection(deg) {
             if (deg >= 338 || deg < 23) return "Nord";
             if (deg >= 23 && deg < 68) return "Nord-Est";
@@ -30,6 +34,7 @@ var callBackGetSuccess = function(data){
     var element7 = document.getElementById("zone_meteo7");
     var element8 = document.getElementById("zone_meteo8");
     var element11 = document.getElementById("zone_meteo11");
+    // Ajout possible mais n'existe pas dans mon abonnement de free key :
     // var element9 = document.getElementById("zone_meteo9");
     // var element10 = document.getElementById("zone_meteo10");
     
@@ -41,7 +46,6 @@ var callBackGetSuccess = function(data){
     element6.innerHTML = "Temp min : " + data.main.temp_min + " &degC";
     element7.innerHTML = "Temp max : " + data.main.temp_max + " &degC";
     element3.innerHTML = "Humidité : " + data.main.humidity + " %";
-
     // Ajout possible mais n'existe pas dans mon abonnement de free key :
     // element9.innerHTML = "Mm de pluie par heure : " + data.rain;
     // element10.innerHTML = "Mn de neige par heure : " + data.snow;
@@ -50,7 +54,6 @@ var callBackGetSuccess = function(data){
     // Traduction de CONDITION par défaut en EN vers FR avec API DeepL en free key:
     const apiKey = '1632191b-075c-4eac-b660-3d25141ff5b9:fx';
     // const apiKey = 'xxx';
-
 
     let weatherCondition = data.weather[0].main;
 
@@ -70,18 +73,17 @@ var callBackGetSuccess = function(data){
     // fetch(`https://api-free.deepl.com/v2/translate?auth_key=${apiKey}&text=${weatherCondition}&target_lang=FR`, {method: 'POST'
     // })
     fetch(proxyUrl + deeplUrl, { method: 'POST' })
-    .then(response => response.json())
-    .then(result => {
-        // Stockage du texte traduit :
-        let translatedText = result.translations[0].text;
+        .then(response => response.json())
+        .then(result => {
+            // Stockage du texte traduit :
+            let translatedText = result.translations[0].text;
 
-        // Mise à jour de l'element4 ayant était traduit
-        element4.innerHTML = "Conditions : " + translatedText;
-    })
-    .catch(error => {
-        console.error('Erreur:', error);
+            // Mise à jour de l'element4 ayant était traduit
+            element4.innerHTML = "Conditions : " + translatedText;
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
     });
-
     // version simple sans traduction ci dessous (obsolète du coup): 
     // element4.innerHTML = "Conditions : " + data.weather[0].main;
 
@@ -89,20 +91,15 @@ var callBackGetSuccess = function(data){
     // Mise à jour de l'element5 avec transformation des m/s en km/h 
     let windSpeedMs = data.wind.speed;
     let windSpeedKmh = (windSpeedMs * 3.6).toFixed(1);
-
     element5.innerHTML = `Force du vent : ${windSpeedKmh} km/h`;
-
     // version EN/US en m/s et pas FR en km/h ci dessous (obsolète du coup): 
     // element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
 
-    
 
-        let windDirection = getWindDirection(data.wind.deg);
-
-        element11.innerHTML = `Direction du vent : ${windDirection}`;
+    let windDirection = getWindDirection(data.wind.deg);
+    element11.innerHTML = `Direction du vent : ${windDirection}`;
 
 }
-
 
 
     function buttonClickGet(){
