@@ -53,12 +53,12 @@ var callBackGetSuccess = function(data){
 
     element.innerHTML =  data.name;
     element1.innerHTML = data.main.temp + " &degC";
-    element2.innerHTML = "Ressentie : " + data.main.feels_like + " &degC";
+    element2.innerHTML = "Ressentie: " + data.main.feels_like + " &degC";
     element8.innerHTML = "<img src='https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png'> ";
-    element6.innerHTML = "Temp min : " + data.main.temp_min + " &degC";
-    element7.innerHTML = "Temp max : " + data.main.temp_max + " &degC";
-    element3.innerHTML = "Humidité : " + data.main.humidity + " %";
-    element12.innerHTML = "Code Pays : " + data.sys.country;
+    element6.innerHTML = "Temp min: " + data.main.temp_min + " &degC";
+    element7.innerHTML = "Temp max: " + data.main.temp_max + " &degC";
+    element3.innerHTML = "Humidité: " + data.main.humidity + " %";
+    element12.innerHTML = "C.Pays: " + data.sys.country;
     // Ajout possible mais n'existe pas dans mon abonnement de free key :
     // element9.innerHTML = "Mm de pluie par heure : " + data.rain;
     // element10.innerHTML = "Mn de neige par heure : " + data.snow;
@@ -92,7 +92,7 @@ var callBackGetSuccess = function(data){
             let translatedText = result.translations[0].text;
 
             // Mise à jour de l'element4 ayant était traduit
-            element4.innerHTML = "Conditions : " + translatedText;
+            element4.innerHTML = "Conditions: " + translatedText;
         })
         .catch(error => {
             console.error('Erreur:', error);
@@ -104,20 +104,20 @@ var callBackGetSuccess = function(data){
     // Mise à jour de l'element5 avec transformation des m/s en km/h 
     let windSpeedMs = data.wind.speed;
     let windSpeedKmh = (windSpeedMs * 3.6).toFixed(1);
-    element5.innerHTML = `Force du vent : ${windSpeedKmh} km/h`;
+    element5.innerHTML = `Force du vent: ${windSpeedKmh} km/h`;
     // version EN/US en m/s et pas FR en km/h ci dessous (obsolète du coup): 
     // element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
 
 
     // Direction du vent grace a la fonction getWindDirection :
     let windDirection = getWindDirection(data.wind.deg);
-    element11.innerHTML = `Direction du vent : ${windDirection}`;
+    element11.innerHTML = `Direction du vent: ${windDirection}`;
 
 
     // Heure du lever et du coucher du soleil grace a la fonction formatTime :
     let sunriseDate = new Date(data.sys.sunrise * 1000);
     let sunsetDate = new Date(data.sys.sunset * 1000);
-    element13.innerHTML = "Lever et coucher du soleil : " + formatTime(sunriseDate) + " - " + formatTime(sunsetDate);
+    element13.innerHTML = "Lever et coucher du soleil: " + formatTime(sunriseDate) + " - " + formatTime(sunsetDate);
 
 }
 
