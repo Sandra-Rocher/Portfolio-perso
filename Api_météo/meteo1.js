@@ -58,7 +58,7 @@ var callBackGetSuccess = function(data){
     element6.innerHTML = "Temp min: " + data.main.temp_min + " &degC";
     element7.innerHTML = "Temp max: " + data.main.temp_max + " &degC";
     element3.innerHTML = "Humidité: " + data.main.humidity + " %";
-    element12.innerHTML = "C.Pays: " + data.sys.country;
+    element12.innerHTML = "Code.Pays: " + data.sys.country;
     // Ajout possible mais n'existe pas dans mon abonnement de free key :
     // element9.innerHTML = "Mm de pluie par heure : " + data.rain;
     // element10.innerHTML = "Mn de neige par heure : " + data.snow;
@@ -104,14 +104,14 @@ var callBackGetSuccess = function(data){
     // Mise à jour de l'element5 avec transformation des m/s en km/h 
     let windSpeedMs = data.wind.speed;
     let windSpeedKmh = (windSpeedMs * 3.6).toFixed(1);
-    element5.innerHTML = `Force du vent: ${windSpeedKmh} km/h`;
+    element5.innerHTML = `Vent: ${windSpeedKmh} km/h`;
     // version EN/US en m/s et pas FR en km/h ci dessous (obsolète du coup): 
     // element5.innerHTML = "Force du vent : " + data.wind.speed + " m/s";
 
 
     // Direction du vent grace a la fonction getWindDirection :
     let windDirection = getWindDirection(data.wind.deg);
-    element11.innerHTML = `Direction du vent: ${windDirection}`;
+    element11.innerHTML = `Direction : ${windDirection}`;
 
 
     // Heure du lever et du coucher du soleil grace a la fonction formatTime : 
@@ -127,7 +127,7 @@ var callBackGetSuccess = function(data){
     function buttonClickGet(){
 
         // la height de la div s'allonge au click pour que toutes les infos météo rentrent dans la zone
-        document.getElementById("zone").style.height = "390px";
+        document.getElementById("zone").style.height = "420px";
 
         var queryLoc = document.getElementById("queryLoc").value;
         var url="https://api.openweathermap.org/data/2.5/weather?q="+queryLoc+"&appid=44e9203541e336d7e477fe5fd8022a05&units=metric"
