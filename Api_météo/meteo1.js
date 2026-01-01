@@ -23,8 +23,8 @@
 
         // 🌅 Fonction pour formater l'heure en hh:mm pour le lever et le coucher du soleil
         function formatTime(date) {
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
+            let hours = date.getUTCHours();
+            let minutes = date.getUTCMinutes();
             if (hours < 10) hours = "0" + hours;
             if (minutes < 10) minutes = "0" + minutes;
             return hours + "H" + minutes;
@@ -114,9 +114,11 @@ var callBackGetSuccess = function(data){
     element11.innerHTML = `Direction du vent: ${windDirection}`;
 
 
-    // Heure du lever et du coucher du soleil grace a la fonction formatTime :
-    let sunriseDate = new Date(data.sys.sunrise * 1000);
-    let sunsetDate = new Date(data.sys.sunset * 1000);
+    // Heure du lever et du coucher du soleil grace a la fonction formatTime : 
+    // Attention : il faut tenir compte du data.timezone pour avoir la bonne heure UTC celon le pays concerné :
+    let timezoneOffset = data.timezone;
+    let sunriseDate = new Date((data.sys.sunrise + timezoneOffset) * 1000);
+    let sunsetDate = new Date((data.sys.sunset + timezoneOffset) * 1000);
     element13.innerHTML = "Lever et coucher du soleil: " + formatTime(sunriseDate) + " - " + formatTime(sunsetDate);
 
 }
