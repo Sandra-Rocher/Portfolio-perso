@@ -111,7 +111,7 @@ var callBackGetSuccess = function(data){
 
     // Direction du vent grace a la fonction getWindDirection :
     let windDirection = getWindDirection(data.wind.deg);
-    element11.innerHTML = `Direction : ${windDirection}`;
+    element11.innerHTML = `Direction: ${windDirection}`;
 
 
     // Heure du lever et du coucher du soleil grace a la fonction formatTime : 
