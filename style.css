@@ -861,7 +861,12 @@ footer img:hover{
     .adress-box{
         width:60%;
     }
-    
+
+    .font_awesome img{
+    width: 25px;
+    height: 25px;
+    margin-top: 5px;
+    }
 }
 
 @media screen and (max-width: 700px) {
